@@ -178,6 +178,20 @@ bool NginxConfigParser::Parse(std::istream* config_file, NginxConfig* config) {
           config_stack.top()->statements_.emplace_back(
               new NginxConfigStatement);
         }
+        else {
+          bool intCheck = false;
+          bool alphaCheck = false;
+          for(int i = 0; i < token.size(); i++){
+            if(i==0 && token[i] == '-')
+              alphaCheck = true;
+            if(isalpha(token[i]))
+              alphaCheck = true;
+            if(isdigit(token[i]))
+              intCheck = true;
+          }
+          if(intCheck && alphaCheck)
+            break;
+        }
         config_stack.top()->statements_.back().get()->tokens_.push_back(
             token);
       } else {
